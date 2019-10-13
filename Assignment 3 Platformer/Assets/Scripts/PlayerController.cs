@@ -7,11 +7,12 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Rigidbody2D rbody;
     SpriteRenderer spriteRenderer;
-    bool isGrounded;
+    public bool isGrounded;
 
-    [SerializeField]
-    Transform platformCheck;
+    public float speed;
+    public float jumpHeight;
 
+    public Transform platformCheck;
 
     // Start is called before the first frame update
     void Start()
@@ -34,25 +35,28 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey("d"))
         {
-            rbody.velocity = new Vector2(8, rbody.velocity.y);
+            rbody.velocity = new Vector2(speed, rbody.velocity.y);
+            //if (isGrounded)
             //animator.Play("Player_Run");
             spriteRenderer.flipX = false;
         }
         else if (Input.GetKey("a"))
         {
-            rbody.velocity = new Vector2(-8, rbody.velocity.y);
+            rbody.velocity = new Vector2(-speed, rbody.velocity.y);
+            //if (isGrounded)
             //animator.Play("Player_Run");
             spriteRenderer.flipX = true;
         }
         else
         {
-            //animator.Play("Player_Idle");
+            if (isGrounded)
+            animator.Play("Player_Idle");
             rbody.velocity = new Vector2(0, rbody.velocity.y);
         }
 
         if (Input.GetKey("space") && isGrounded)
         {
-            rbody.velocity = new Vector3(rbody.velocity.x, 3);
+            rbody.velocity = new Vector2(rbody.velocity.x, jumpHeight);
             animator.Play("Player_Jump");
         }
     }
