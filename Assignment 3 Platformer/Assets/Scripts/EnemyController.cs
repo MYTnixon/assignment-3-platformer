@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public float speed;
-    public float distance;
+    private float distance;
     private bool movingRight = true;
     public Transform enemyPlatformCheck;
 

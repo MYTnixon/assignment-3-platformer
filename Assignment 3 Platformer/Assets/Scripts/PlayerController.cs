@@ -13,10 +13,14 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight;
 
     public Transform platformCheck;
+    public GameObject gameOverText, restartButton, enemy;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameOverText.SetActive(false);
+        restartButton.SetActive(false);
+
         animator = GetComponent<Animator>();
         rbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -58,6 +62,16 @@ public class PlayerController : MonoBehaviour
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpHeight);
             animator.Play("Player_Jump");
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Enemy"))
+        {
+            gameOverText.SetActive(true);
+            restartButton.SetActive(true);
+            gameObject.SetActive(false);
         }
     }
 }
