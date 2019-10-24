@@ -8,6 +8,7 @@ public class EnemyController : MonoBehaviour
     private float distance;
     private bool movingRight = true;
     public Transform enemyPlatformCheck;
+    public static int enemiesKilled;
 
     private void Update()
     {
@@ -26,6 +27,15 @@ public class EnemyController : MonoBehaviour
                 transform.eulerAngles = new Vector3(0, 0, 0);
                 movingRight = true;
             }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Player"))
+        {
+            gameObject.SetActive(false);
+            enemiesKilled += 1;
         }
     }
 }

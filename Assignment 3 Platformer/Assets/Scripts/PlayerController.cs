@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight;
 
     public Transform platformCheck;
-    public GameObject gameOverText, restartButton, enemy;
+    public GameObject gameOverText, restartButton;
 
     // Start is called before the first frame update
     void Start()
@@ -67,11 +67,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
+        if (collision.gameObject.tag.Equals("DeathTrigger"))
         {
             gameOverText.SetActive(true);
             restartButton.SetActive(true);
             gameObject.SetActive(false);
+        }
+        if (collision.gameObject.tag.Equals("Enemy"))
+        {
+            rbody.velocity = new Vector2(rbody.velocity.x, jumpHeight);
         }
     }
 }
