@@ -11,7 +11,10 @@ public class CoinScript : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             gameObject.SetActive(false);
-            coinsCollected += 1;
+            if (RestartButton.isRestarted == false)
+            {
+                coinsCollected += 1;
+            }
         }
     }
 }

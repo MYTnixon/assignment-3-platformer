@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     public Transform platformCheck;
     public GameObject gameOverText, restartButton;
 
+    public static int deathCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -69,6 +71,10 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.tag.Equals("DeathTrigger"))
         {
+            if (RestartButton.isRestarted == false)
+            {
+                deathCount += -2;
+            }
             gameOverText.SetActive(true);
             restartButton.SetActive(true);
             gameObject.SetActive(false);

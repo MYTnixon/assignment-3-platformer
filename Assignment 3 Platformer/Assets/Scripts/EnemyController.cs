@@ -35,7 +35,10 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             gameObject.SetActive(false);
-            enemiesKilled += 1;
+            if (RestartButton.isRestarted == false)
+            {
+                enemiesKilled += 1;
+            }
         }
     }
 }
