@@ -2511,7 +2511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9fdbaf8ac6f28e40929fcb3f2231a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreTotal: 0
+  coinsTotal: 0
   score: 0
 --- !u!4 &1449016436
 Transform:

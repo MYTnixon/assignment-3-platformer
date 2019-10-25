@@ -18,9 +18,6 @@ public class PlayerController : MonoBehaviour
     public Text coinText;
     public Text totalScoreText;
 
-    public static int deathCount;
-    
-    
     private GameObject[] coins;
     private Vector2 startPos;
 
@@ -97,7 +94,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("WinTrigger"))
         {
-            ScoreManager.Instance.scoreTotal += ScoreManager.Instance.score;
+            ScoreManager.Instance.coinsTotal += ScoreManager.Instance.score;
             UpdateTotalScoreText();
             int c = SceneManager.GetActiveScene().buildIndex;
             if (c < SceneManager.sceneCountInBuildSettings)
@@ -120,7 +117,7 @@ public class PlayerController : MonoBehaviour
     }
     void UpdateTotalScoreText()
     {
-        totalScoreText.text = "Total Coins: " + ScoreManager.Instance.scoreTotal;
+        totalScoreText.text = "Total Coins: " + ScoreManager.Instance.coinsTotal;
     }
 
     void resetGameState()
