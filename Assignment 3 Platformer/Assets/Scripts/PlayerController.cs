@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public static PlayerController Instance { get; private set; }
-
     Animator animator;
     Rigidbody2D rbody;
     SpriteRenderer spriteRenderer;
@@ -21,35 +19,25 @@ public class PlayerController : MonoBehaviour
     public Text totalScoreText;
 
     public static int deathCount;
-    public int score;
-    public int scoreTotal;
+    
+    
     private GameObject[] coins;
     private Vector2 startPos;
 
     private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    // Start is called before the first frame update
-    void Start()
     {
         animator = GetComponent<Animator>();
         rbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         coins = GameObject.FindGameObjectsWithTag("Coin");
         startPos = rbody.position;
+    }
 
-        score = 0;
+    private void Start()
+    {
+        ScoreManager.Instance.score = 0;
         UpdateCoinText();
+        UpdateTotalScoreText();
     }
 
     private void FixedUpdate()
@@ -93,10 +81,6 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        /*if (collision.gameObject.tag.Equals("DeathTrigger"))
-        {
-            gameObject.SetActive(false);
-        }*/
         if (collision.gameObject.tag.Equals("Enemy"))
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpHeight);
@@ -108,12 +92,12 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Coin"))
         {
             collision.gameObject.SetActive(false);
-            score += 1;
+            ScoreManager.Instance.AddScore(1);
             UpdateCoinText();
         }
         else if (collision.gameObject.CompareTag("WinTrigger"))
         {
-            scoreTotal += score;
+            ScoreManager.Instance.scoreTotal += ScoreManager.Instance.score;
             UpdateTotalScoreText();
             int c = SceneManager.GetActiveScene().buildIndex;
             if (c < SceneManager.sceneCountInBuildSettings)
@@ -124,20 +108,24 @@ public class PlayerController : MonoBehaviour
         {
             resetGameState();
         }
+        else if (collision.gameObject.CompareTag("Button"))
+        {
+            collision.gameObject.SetActive(false);
+        }
     }
 
     void UpdateCoinText()
     {
-        coinText.text = "Coins: " + score;
+        coinText.text = "Coins: " + ScoreManager.Instance.score;
     }
     void UpdateTotalScoreText()
     {
-        totalScoreText.text = "Total Score: " + scoreTotal;
+        totalScoreText.text = "Total Coins: " + ScoreManager.Instance.scoreTotal;
     }
 
     void resetGameState()
     {
-        score = 0;
+        ScoreManager.Instance.score = 0;
         UpdateCoinText();
         for (int i = 0; i < coins.Length; i++)
         {
@@ -146,7 +134,5 @@ public class PlayerController : MonoBehaviour
 
         rbody.position = startPos;
         rbody.velocity = Vector2.zero;
-        
     }
-
 }
