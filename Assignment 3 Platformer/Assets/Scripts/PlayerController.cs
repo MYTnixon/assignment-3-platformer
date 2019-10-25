@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     Animator animator;
     Rigidbody2D rbody;
     SpriteRenderer spriteRenderer;
@@ -15,12 +18,26 @@ public class PlayerController : MonoBehaviour
 
     public Transform platformCheck;
     public Text coinText;
+    public Text totalScoreText;
 
     public static int deathCount;
     public int score;
     public int scoreTotal;
     private GameObject[] coins;
     private Vector2 startPos;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -97,6 +114,10 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("WinTrigger"))
         {
             scoreTotal += score;
+            UpdateTotalScoreText();
+            int c = SceneManager.GetActiveScene().buildIndex;
+            if (c < SceneManager.sceneCountInBuildSettings)
+                SceneManager.LoadScene(c + 1);
             resetGameState();
         }
         else if (collision.gameObject.CompareTag("DeathTrigger"))
@@ -108,6 +129,10 @@ public class PlayerController : MonoBehaviour
     void UpdateCoinText()
     {
         coinText.text = "Coins: " + score;
+    }
+    void UpdateTotalScoreText()
+    {
+        totalScoreText.text = "Total Score: " + scoreTotal;
     }
 
     void resetGameState()
