@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -13,19 +14,25 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight;
 
     public Transform platformCheck;
-    public GameObject gameOverText, restartButton;
+    public Text coinText;
 
     public static int deathCount;
+    public int score;
+    public int scoreTotal;
+    private GameObject[] coins;
+    private Vector2 startPos;
 
     // Start is called before the first frame update
     void Start()
     {
-        gameOverText.SetActive(false);
-        restartButton.SetActive(false);
-
         animator = GetComponent<Animator>();
         rbody = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        coins = GameObject.FindGameObjectsWithTag("Coin");
+        startPos = rbody.position;
+
+        score = 0;
+        UpdateCoinText();
     }
 
     private void FixedUpdate()
@@ -42,15 +49,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey("d"))
         {
             rbody.velocity = new Vector2(speed, rbody.velocity.y);
-            //if (isGrounded)
-            //animator.Play("Player_Run");
+            if (isGrounded)
+            animator.Play("Player_Run");
             spriteRenderer.flipX = false;
         }
         else if (Input.GetKey("a"))
         {
             rbody.velocity = new Vector2(-speed, rbody.velocity.y);
-            //if (isGrounded)
-            //animator.Play("Player_Run");
+            if (isGrounded)
+            animator.Play("Player_Run");
             spriteRenderer.flipX = true;
         }
         else
@@ -69,19 +76,52 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag.Equals("DeathTrigger"))
+        /*if (collision.gameObject.tag.Equals("DeathTrigger"))
         {
-            if (RestartButton.isRestarted == false)
-            {
-                deathCount += -2;
-            }
-            gameOverText.SetActive(true);
-            restartButton.SetActive(true);
             gameObject.SetActive(false);
-        }
+        }*/
         if (collision.gameObject.tag.Equals("Enemy"))
         {
             rbody.velocity = new Vector2(rbody.velocity.x, jumpHeight);
         }
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Coin"))
+        {
+            collision.gameObject.SetActive(false);
+            score += 1;
+            UpdateCoinText();
+        }
+        else if (collision.gameObject.CompareTag("WinTrigger"))
+        {
+            scoreTotal += score;
+            resetGameState();
+        }
+        else if (collision.gameObject.CompareTag("DeathTrigger"))
+        {
+            resetGameState();
+        }
+    }
+
+    void UpdateCoinText()
+    {
+        coinText.text = "Coins: " + score;
+    }
+
+    void resetGameState()
+    {
+        score = 0;
+        UpdateCoinText();
+        for (int i = 0; i < coins.Length; i++)
+        {
+            coins[i].gameObject.SetActive(true);
+        }
+
+        rbody.position = startPos;
+        rbody.velocity = Vector2.zero;
+        
+    }
+
 }

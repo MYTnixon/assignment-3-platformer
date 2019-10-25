@@ -6,9 +6,15 @@ public class EnemyController : MonoBehaviour
 {
     public float speed;
     private float distance;
+    public static Rigidbody2D rbodyEnemy;
     private bool movingRight = true;
     public Transform enemyPlatformCheck;
     public static int enemiesKilled;
+
+    void Start()
+    {
+        rbodyEnemy = GetComponent<Rigidbody2D>();
+    }
 
     private void Update()
     {
@@ -35,10 +41,6 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag.Equals("Player"))
         {
             gameObject.SetActive(false);
-            if (RestartButton.isRestarted == false)
-            {
-                enemiesKilled += 1;
-            }
         }
     }
 }

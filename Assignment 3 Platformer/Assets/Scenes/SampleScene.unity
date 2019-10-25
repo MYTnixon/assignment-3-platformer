@@ -3470,6 +3470,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4218950031935613859, guid: 138d365d01c08924fb22fd09c8eb6345,
+        type: 3}
+      propertyPath: m_Name
+      value: Player
+      objectReference: {fileID: 0}
     - target: {fileID: 2561304059283848217, guid: 138d365d01c08924fb22fd09c8eb6345,
         type: 3}
       propertyPath: speed
@@ -3495,11 +3500,6 @@ PrefabInstance:
       propertyPath: restartButton
       value: 
       objectReference: {fileID: 1193735949}
-    - target: {fileID: 4218950031935613859, guid: 138d365d01c08924fb22fd09c8eb6345,
-        type: 3}
-      propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
     - target: {fileID: 4218950031935613884, guid: 138d365d01c08924fb22fd09c8eb6345,
         type: 3}
       propertyPath: m_LocalPosition.x

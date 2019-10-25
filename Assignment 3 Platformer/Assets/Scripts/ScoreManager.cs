@@ -4,38 +4,20 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int coins;
-    public int enemies;
-    public int deaths;
-    public int scoreTotal;
-    public bool restarted;
+    public GameObject playerObject;
+    public PlayerController playerController;
+
+    public int total;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerController = playerObject.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        coins = CoinScript.coinsCollected;
-        enemies = EnemyController.enemiesKilled;
-        deaths = PlayerController.deathCount;
-        restarted = RestartButton.isRestarted;
-        scoreTotal = coins + enemies + deaths;
-
-        if (scoreTotal <= -1)
-        {
-            scoreTotal = 0;
-        }
-
-        if (restarted == true)
-        {
-            coins = 0;
-            enemies = 0;
-            deaths = 0;
-            restarted = false;
-        }
+        
     }
 }
